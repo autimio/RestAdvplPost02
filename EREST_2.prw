@@ -13,14 +13,14 @@ User Function EREST_2()
 Return
 
 /*/{Protheus.doc} CLIENTES
-WebService Rest para realizar a manipulaÁ„o de clientes
+WebService Rest para realizar a manipula√ß√£o de clientes
 @author Victor Andrade
 @since 20/04/2017
 @type class
 /*/
-WSRESTFUL CLIENTES DESCRIPTION "ServiÁo REST CRUD de Clientes"
+WSRESTFUL CLIENTES DESCRIPTION "Servi√ßo REST CRUD de Clientes"
 
-WSDATA RECEIVE As String //Json Recebido no corpo da requiÁ„o
+WSDATA RECEIVE As String //Json Recebido no corpo da requi√ß√£o
 WSDATA CGC	   As String //Em caso de PUT ou DELETE pega o CGC por URL
  
 WSMETHOD POST 	DESCRIPTION "Cadastra um novo cliente" 		WSSYNTAX ""
@@ -40,7 +40,7 @@ WSMETHOD GET WSSERVICE CLIENTES
 Local aArea 	 := GetArea()
 Local cNextAlias := GetNextAlias()
 Local oCliente	 := CLIENTES():New() // --> Objeto da classe cliente
-Local oResponse  := FULL_CLIENTES():New() // --> Objeto que ser· serializado
+Local oResponse  := FULL_CLIENTES():New() // --> Objeto que ser√° serializado
 Local cJSON		 := ""
 Local lRet		 := .T.
 
@@ -68,7 +68,7 @@ If (cNextAlias)->( !Eof() )
 		oCliente:SetTel(	AllTrim((cNextAlias)->A1_TEL ))
 		
 		oResponse:Add(oCliente)
-		
+		oCliente := CLIENTES():New()
 		(cNextAlias)->( DbSkip() )
 	
 	EndDo
@@ -86,7 +86,7 @@ RestArea(aArea)
 Return(lRet)
 
 /*/{Protheus.doc} POST
-Efetua a inclus„o de um novo cliente
+Efetua a inclus√£o de um novo cliente
 @author Victor Andrade
 @since 27/04/2017
 @version undefined
@@ -106,7 +106,7 @@ Local aArea		 := GetArea()
 
 Private lMsErroAuto := .F.
 
-// --> Cria o diretÛrio para salvar os arquivos de log
+// --> Cria o diret√≥rio para salvar os arquivos de log
 If !ExistDir("\log_cli")
 	MakeDir("\log_cli")
 EndIf
@@ -154,7 +154,7 @@ If !(SA1->( DbSeek( xFilial("SA1") + oParseJSON:CLIENTE:CGC ) ))
 	EndIf		 
 
 Else
-	SetRestFault(400, "Cliente j· cadastrado: " + SA1->A1_COD + " - " + SA1->A1_LOJA)
+	SetRestFault(400, "Cliente j√° cadastrado: " + SA1->A1_COD + " - " + SA1->A1_LOJA)
 	lRet := .F. 	 
 EndIf
 
@@ -163,7 +163,7 @@ RestArea(aArea)
 Return(lRet)
 
 /*/{Protheus.doc} PUT
-Altera as informaÁıes de um cliente
+Altera as informa√ß√µes de um cliente
 @author Victor Andrade
 @since 28/04/2017
 @type function
@@ -171,7 +171,7 @@ Altera as informaÁıes de um cliente
 WSMETHOD PUT WSRECEIVE RECEIVE WSSERVICE CLIENTES
 
 Local cJSON := Self:GetContent() // --> Pega a string do JSON
-Local cCGC	:= Self:CGC // --> Pega o par‚metro recebido pela UR«
+Local cCGC	:= Self:CGC // --> Pega o par√¢metro recebido pela UR√á
 Local lRet  := .T.
 Local oParseJSON := Nil 
 Local aDadosCli	 := {} //--> Array para ExecAuto do MATA030
@@ -214,7 +214,7 @@ If (SA1->( DbSeek( xFilial("SA1") + cCGC ) ))
 	EndIf		 
 	
 Else
-	SetRestFault(400, "Cliente n„o encontrado.")
+	SetRestFault(400, "Cliente n√£o encontrado.")
 	lRet := .F.
 EndIf
 
@@ -241,7 +241,7 @@ Next nErr
 Return(cNewErro)
 
 /*/{Protheus.doc} GetNewCod
-Retorna o prÛximo cÛdigo livre do SA1
+Retorna o pr√≥ximo c√≥digo livre do SA1
 @author Victor Andrade
 @since 28/04/2017
 @type function
